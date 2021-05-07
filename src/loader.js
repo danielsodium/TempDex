@@ -3,7 +3,7 @@ var https = require('follow-redirects').https;
 onPlayer = false;
 const path = (electron.app || electron.remote.app).getPath('userData')+"/AppStorage"
 
-module.exports = { replaceText, toggleNav, loadSettings, loadHome, loadLibrary, loadSearch };
+module.exports = { replaceText, toggleNav, loadSettings, loadHome, loadSearch };
 
 
 function loadSettings() {
@@ -127,41 +127,6 @@ function viewOffline(title) {
     })
 }
 
-function loadLibrary() {
-    if (onPlayer) exitPlay();
-
-    $("#main").empty();
-    $("#main").load("library.html", function() {
-        if (!settings.devMode) {
-            fs.readFile(path+"/data.json", 'utf8' , (err, data) => {
-                entries = JSON.parse(data).anime
-                for (var i = 0; i < entries.length; i++) (function(i){
-                    var searchdiv = document.createElement("li")
-                    var img = document.createElement("img");                 // Create a <li> node
-                    var textnode = document.createTextNode(entries[i].title);         // Create a text node
-                    img.src = entries[i].image
-                    var title = document.createElement("a");
-                    title.className = "poster";
-                    title.appendChild(img)
-                    var name = document.createElement("a");
-                    name.className = "name";
-                    name.appendChild(textnode)
-
-                    searchdiv.appendChild(title)
-                    searchdiv.appendChild(name)
-                    var linked = document.createElement("a")
-                    linked.addEventListener('click', function() {
-                        viewOffline(entries[i].title)
-                    })
-                    linked.appendChild(searchdiv)
-                    document.getElementById("results").appendChild(linked);
-                })(i);
-
-
-            })
-        }
-    })
-}
 
 function loadSearch() {
     if (onPlayer) exitPlay();
@@ -253,10 +218,10 @@ function loadView(results) {
             console.log(chapters)
 
             for (var i = 0; i < chapters.results.length; i++) (function(i){
-                if (chapters.results[i].data.attributes.translatedLanguage) {
+                if (chapters.results[i].data.attributes.translatedLanguage == "en") {
                     var entry = document.createElement("tr");
                     var num = document.createElement("th")
-                    num.appendChild(document.createTextNode(chapters.results[i].data.attributes.chapter + " " +chapters.results[i].data.attributes.translatedLanguage ));
+                    num.appendChild(document.createTextNode(chapters.results[i].data.attributes.chapter));
                     entry.appendChild(num)
                     var title = document.createElement("th")
                     titleLink = document.createElement("a")

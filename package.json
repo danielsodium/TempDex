@@ -13,6 +13,10 @@
   "devDependencies": {
     "electron": "^12.0.7"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/danielsodium/TempDex.git"
+  },
   "dependencies": {
     "follow-redirects": "^1.14.0",
     "jquery": "^3.6.0",
