@@ -202,38 +202,41 @@ function getAPI(hostpath, callback) {
 
 function loadView(results) {
     $("#main").empty();
-    getAPI(`/manga/${results.data.id}/feed?limit=500`, function(chapters) {
-        $("#main").load("view.html", function() {
-            data = results.data.attributes
-            replaceText("anime-title", data.title.en)
-            replaceText("status", data.status)
-            replaceText("demo", data.publicationDemographic)
-            var tagsList = "";
-            for (var i = 0; i < data.tags.length; i++ ) {
-                tagsList += data.tags[i].attributes.name.en + " ";
-            }            
+    $("#main").load("loading.html", function() {
+        getAPI(`/manga/${results.data.id}/feed?limit=500`, function(chapters) {
+            $("#main").empty();
+            $("#main").load("view.html", function() {
+                data = results.data.attributes
+                replaceText("anime-title", data.title.en)
+                replaceText("status", data.status)
+                replaceText("demo", data.publicationDemographic)
+                var tagsList = "";
+                for (var i = 0; i < data.tags.length; i++ ) {
+                    tagsList += data.tags[i].attributes.name.en + " ";
+                }            
 
-            replaceText("tags", tagsList)
-            document.getElementById("anime-desc").innerHTML =  data.description.en.replace(/\[/g,"<").replace(/\]/g,">")
-            console.log(chapters)
+                replaceText("tags", tagsList)
+                document.getElementById("anime-desc").innerHTML =  data.description.en.replace(/\[/g,"<").replace(/\]/g,">")
+                console.log(chapters)
 
-            for (var i = 0; i < chapters.results.length; i++) (function(i){
-                if (chapters.results[i].data.attributes.translatedLanguage == "en") {
-                    var entry = document.createElement("tr");
-                    var num = document.createElement("th")
-                    num.appendChild(document.createTextNode(chapters.results[i].data.attributes.chapter));
-                    entry.appendChild(num)
-                    var title = document.createElement("th")
-                    titleLink = document.createElement("a")
-                    title.appendChild(document.createTextNode(chapters.results[i].data.attributes.title));
-                    titleLink.appendChild(title)
-                    titleLink.addEventListener('click', function() {
-                        loadChapter(data.title.en, chapters.results[i].data.attributes.chapter, i, chapters.results, results)
-                    })
-                    entry.appendChild(titleLink)
-                    document.getElementById("ch-list").appendChild(entry)
-                }
-            })(i)
+                for (var i = 0; i < chapters.results.length; i++) (function(i){
+                    if (chapters.results[i].data.attributes.translatedLanguage == "en") {
+                        var entry = document.createElement("tr");
+                        var num = document.createElement("th")
+                        num.appendChild(document.createTextNode(chapters.results[i].data.attributes.chapter));
+                        entry.appendChild(num)
+                        var title = document.createElement("th")
+                        titleLink = document.createElement("a")
+                        title.appendChild(document.createTextNode(chapters.results[i].data.attributes.title));
+                        titleLink.appendChild(title)
+                        titleLink.addEventListener('click', function() {
+                            loadChapter(data.title.en, chapters.results[i].data.attributes.chapter, i, chapters.results, results)
+                        })
+                        entry.appendChild(titleLink)
+                        document.getElementById("ch-list").appendChild(entry)
+                    }
+                })(i)
+            })
         })
     })
 }
