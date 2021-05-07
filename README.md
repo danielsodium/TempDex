@@ -1,6 +1,6 @@
 # TempDex
 
-TempDex is a quick solution to MangaDex not having a frontend. I reused most of the code from [AniShelf](https://github.com/danielsodium/AniShelf), so a lot of the code might be useless. I'll update it when I have time.
+TempDex is a quick solution to MangaDex not having a frontend. I reused most of the code from [AniShelf](https://github.com/danielsodium/AniShelf), so a lot of the code might be useless. I'll update it when I have time, but this was just for myself so yeah.
 
 
 ## Installation
